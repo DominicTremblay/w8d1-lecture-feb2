@@ -1,69 +1,69 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 
-import { differenceInDays } from "date-fns";
+import { differenceInDays } from 'date-fns';
 
-import axios from "axios";
+import axios from 'axios';
 
-import SearchBar from "components/SearchBar";
-import Error from "components/Error";
-import Filters from "components/Filters";
-import Results from "components/Results";
+import SearchBar from 'components/SearchBar';
+import Error from 'components/Error';
+import Filters from 'components/Filters';
+import Results from 'components/Results';
 
 export default function LiveSearch(props) {
   const [search, setSearch] = useState({
-    term: "",
+    term: '',
     results: [],
-    loading: false
+    loading: false,
   });
 
   const [filters, setFilters] = useState({
     Explicit: true,
-    "1900s": true,
-    "2000s": true,
+    '1900s': true,
+    '2000s': true,
     Single: false,
-    EP: false
+    EP: false,
   });
 
   const [error, setError] = useState(false);
 
-  const prev = useRef("");
+  const prev = useRef('');
 
   function showError() {
     setSearch({
-      term: "",
+      term: '',
       results: [],
-      loading: false
+      loading: false,
     });
 
     setError(true);
   }
 
   useEffect(() => {
-    if (prev.current === "" && search.term === "") return;
+    if (prev.current === '' && search.term === '') return;
 
     setSearch(prev => ({
       ...prev,
-      loading: true
+      loading: true,
     }));
 
     prev.current = search.term;
 
     axios
       .get(
-        `https://itunes.apple.com/search?term=${search.term}&country=CA&media=music&entity=album&attribute=artistTerm`
+        `https://itunes.apple.com/search?term=${search.term}&country=CA&media=music&entity=album&attribute=artistTerm`,
       )
       .then(response => {
         response.data.results.sort((a, b) => {
           return differenceInDays(
             new Date(b.releaseDate),
-            new Date(a.releaseDate)
+            new Date(a.releaseDate),
           );
         });
 
         setSearch(search => ({
           ...search,
           results: response.data.results,
-          loading: false
+          loading: false,
         }));
       })
       .catch(error => {
@@ -72,8 +72,8 @@ export default function LiveSearch(props) {
   }, [search.term]);
   return (
     <Fragment>
-      <header className="logo">
-        <img src="images/brand.png" alt="Brand" />
+      <header className='logo'>
+        <img src='images/brand.png' alt='Brand' />
       </header>
       <main>
         <SearchBar

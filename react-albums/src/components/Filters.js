@@ -1,25 +1,30 @@
-import React from "react";
+import React from 'react';
 
-export default function Filters(props) {
-  const filterItems = Object.keys(props.filters).map(filter => (
-    <div key={filter} className="filters__form-group">
+export default function Filters({ filters = {}, setFilter }) {
+  //  const filters = props.filters;
+  //  const setFilter = props.setFilter;
+  // Destructuring ES6
+  // const { filters, setFilter } = props;
+
+  const filterItems = Object.keys(filters).map(filter => (
+    <div key={filter} className='filters__form-group'>
       <input
-        className="filters__checkbox"
-        type="checkbox"
+        className='filters__checkbox'
+        type='checkbox'
         name={filter}
         id={filter}
-        checked={props.filters[filter]}
-        onChange={event => props.setFilter(filter, event.target.checked)}
+        checked={filters[filter]}
+        onChange={event => setFilter(filter, event.target.checked)}
       />
-      <label className="filters__label" htmlFor={filter}>
+      <label className='filters__label' htmlFor={filter}>
         {filter}
       </label>
     </div>
   ));
 
   return (
-    <section className="filters">
-      <form className="filters__form" data-testid="filters-form">
+    <section className='filters'>
+      <form className='filters__form' data-testid='filters-form'>
         {filterItems}
       </form>
     </section>
